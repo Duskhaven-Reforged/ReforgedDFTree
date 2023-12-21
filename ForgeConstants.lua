@@ -27,12 +27,12 @@ GameModeRewardType = {
 CharacterPointType = {
     TALENT_SKILL_TREE = "0",
     FORGE_SKILL_TREE = "1",
-    SPEC_COUNT = 2,
+    SPEC_COUNT = "2",
     PRESTIGE_TREE = "3",
     RACIAL_TREE = "4",
     SKILL_PAGE = "5",
     PRESTIGE_COUNT = "6",
-    LEVEL_10_TAB = "7",
+    CLASS_TREE = "7",
     PET_TALENT = "8",
 }
 
@@ -418,13 +418,7 @@ DeserializerDefinitions = {
         FIELDS = {
             DELIMITER = "^",
             FIELDS = {{
-                NAME = "TabId"
-            }, {
-                NAME = "PointType"
-            }, {
-                    NAME = "Talents",
-                    OBJECT = "*",
-                    DICT = "~" -- will build dict of basic KVP without fields defined.
+                NAME = "Talents"
             }}
         }
     },   
@@ -524,6 +518,10 @@ DeserializerDefinitions = {
                     },
                     {
                         NAME = "nodeType",
+                        TYPE = FieldType.NUMBER
+                    },
+                    {
+                        NAME = "nodeIndex",
                         TYPE = FieldType.NUMBER
                     },
                     {

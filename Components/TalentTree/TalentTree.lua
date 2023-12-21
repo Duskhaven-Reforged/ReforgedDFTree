@@ -8,13 +8,23 @@ TalentTree = {
     FORGE_CURRENT_PAGE = 0,
     FORGE_MAX_PAGE = nil,
     FORGE_TALENTS = nil,
-    INITIALIZED = false
+    INITIALIZED = false,
+    SELECTED_SPEC = nil,
+    MaxPoints = {},
+    ClassTree = nil,
+    CLASS_TAB = nil
 }
 
 TreeCache = {
     Spells = {},
     PointsSpent = {},
-    Investments = {}
+    Investments = {},
+    TotalInvests = {},
+    PrereqUnlocks = {},
+    PrereqRev = {},
+    Points = {},
+    PreviousString = {},
+    IndexToFrame = {}
 }
 
 local Backdrop = {
@@ -23,6 +33,8 @@ local Backdrop = {
     tile = true, tileSize = 16, edgeSize = 16, 
     insets = { left = 4, right = 4, top = 4, bottom = 4 }
 }
+
+alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
 
 TalentTreeWindow = CreateFrame("Frame", "TalentFrame", UIParent);
 TalentTreeWindow:SetSize(1000, 800)
@@ -47,8 +59,6 @@ ClassSpecWindow:SetScript("OnHide", function(self)
 end)
 
 tinsert(UISpecialFrames, "ClassSpecWindow")
-
-
 
 local windows = {TalentTreeWindow, ClassSpecWindow}
 for i, window in ipairs(windows) do
@@ -91,6 +101,7 @@ for i, window in ipairs(windows) do
       if ClassSpecWindow:IsVisible() then
 	     ClassSpecWindow:Hide()
 		 TalentTreeWindow:Show()
+         SelectTab(TalentTree.FORGE_SELECTED_TAB)
 		 end
     end)
 
@@ -162,10 +173,10 @@ BorderSpec:SetTexCoord(0, 1, 0, 0.57)
 BorderSpec:SetSize(TalentTreeWindow:GetWidth() * 1.8, TalentTreeWindow:GetHeight() * 1.3)
 
 ClassSpecWindow.Lockout = CreateFrame("Frame", "ClassSpecWindow.Lockout", ClassSpecWindow)
-ClassSpecWindow.Lockout:SetSize(ClassSpecWindow:GetWidth() * 1.42, ClassSpecWindow:GetHeight() * 0.95)
+ClassSpecWindow.Lockout:SetSize(ClassSpecWindow:GetWidth() * 1.433, ClassSpecWindow:GetHeight() * 0.96)
 ClassSpecWindow.Lockout:SetFrameLevel(100)
 ClassSpecWindow.Lockout:EnableMouse(true)
-ClassSpecWindow.Lockout:SetPoint("CENTER", -17, -5)
+ClassSpecWindow.Lockout:SetPoint("CENTER", -25, -5)
 ClassSpecWindow.Lockout:Hide()
 
 
@@ -182,20 +193,16 @@ SpecTitleText:SetPoint("TOP", BackgroundSpec, "TOP", -20, -45)
 SpecTitleText:SetTextColor(1, 1, 0)
 SpecTitleText:SetText("Specializations")
 
-
-
 local windows = {TalentTreeWindow, ClassSpecWindow}
 
 for i, window in ipairs(windows) do
-local closeButton = CreateFrame("Button", "ClosePanel" .. i, window, "UIPanelCloseButton")
-closeButton:SetSize(40, 40)  -- Tamanho do botão
+local closeButton = CreateFrame("Button", "CloseTalentUI" .. i, window, "UIPanelCloseButton")
+closeButton:SetSize(40, 40) 
+closeButton:SetFrameLevel(100)
 
-
--- Configurando o script de clique para fechar o frame
 closeButton:SetScript("OnClick", function()
     window:Hide()
 end)
-
 
 ClassIconTexture = window:CreateTexture(nil, "ARTWORK")
 ClassIconTexture:SetTexture(CONSTANTS.UI.MAIN_BG)
@@ -205,13 +212,12 @@ SetPortraitToTexture(ClassIconTexture, CONSTANTS.classIcon[string.upper(CONSTANT
 
 LockoutTexture = ClassSpecWindow.Lockout:CreateTexture(nil, "BACKGROUND") 
 LockoutTexture:SetAllPoints()
-LockoutTexture:SetTexture("Interface/Tooltips/UI-Tooltip-Background")
+LockoutTexture:SetTexture("Interface\\AddOns\\ForgedWoWCommunication\\UI\\Background_DragonflightSpec.blp")
+LockoutTexture:SetTexCoord(0.083007813, 0.880859375, 0.576660156, 1)
 LockoutTexture:SetVertexColor(0, 0, 0, 0.7)
 LockoutTexture:SetDrawLayer("BACKGROUND", -1)
 
 ClassSpecWindow.Lockout.texture = texture
-
-
 
 	    if window == TalentTreeWindow then
         closeButton:SetPoint("TOPRIGHT", window, "TOPRIGHT", 190, 8) 
@@ -233,7 +239,7 @@ TalentTreeWindow.Container:SetFrameStrata("MEDIUM");
 TalentTreeWindow.Container.Background = TalentTreeWindow.Container:CreateTexture(nil, "ARTWORK")
 TalentTreeWindow.Container.Background:SetTexCoord(0.16, 1, 0.0625, 0.5625)
 TalentTreeWindow.Container.Background:SetPoint("CENTER", -12, 20)
-TalentTreeWindow.Container.Background:SetSize(TalentTreeWindow:GetWidth() * 1.47, TalentTreeWindow:GetHeight() * 0.925)
+TalentTreeWindow.Container.Background:SetSize(TalentTreeWindow:GetWidth() * 1.47, TalentTreeWindow:GetHeight() * 0.945)
 
 TalentTreeWindow.Container.CloseButtonForgeSkills = CreateFrame("Button",
     TalentTreeWindow.Container.CloseButtonForgeSkills, TalentTreeWindow.Container)
@@ -274,15 +280,12 @@ StaticPopupDialogs["CONFIRM_TALENT_WIPE"] = {
     OnAccept = function()
         local playerLevel = UnitLevel("player") -- Get the player's level
         if playerLevel >= 10 then
-            PushForgeMessage(ForgeTopic.UNLEARN_TALENT, "-1;0")
-            -- TalentTree.FORGE_SELECTED_TAB.Id;-1
+            RevertAllTalents()
             DEFAULT_CHAT_FRAME:AddMessage("Your talents have been reset.", 1, 1, 0) -- Sends a yellow message
-            local talent = GetPointByCharacterPointType(tostring(CharacterPointType.TALENT_SKILL_TREE), true)
-            TalentTreeWindow.PointsBottomLeft.Points:SetText(talent.AvailablePoints .. " talent points")
         else
             DEFAULT_CHAT_FRAME:AddMessage("You must be at least level 10 to reset talents.", 1, 0, 0) -- Sends a red error message
         end
-        --SelectTab(TalentTree.FORGE_TABS[3]);
+        StaticPopup_Hide("CONFIRM_TALENT_WIPE")
     end,
     timeout = 0,
     whileDead = true,
@@ -304,4 +307,33 @@ resetButton:Show()
 
 resetButton:SetScript("OnClick", function()
     StaticPopup_Show("CONFIRM_TALENT_WIPE")
+end)
+
+local AcceptTalentsButton = CreateFrame("Button", "AcceptTalentsButton", TalentTreeWindow, "UIPanelButtonTemplate")
+AcceptTalentsButton:SetSize(115, 40)
+AcceptTalentsButton:SetPoint("BOTTOM", 0, 0) -- Position the button at the top right of the TalentTreeWindow
+AcceptTalentsButton:SetText("a")
+AcceptTalentsButton:Show()
+
+AcceptTalentsButton:RegisterForClicks("AnyDown");
+AcceptTalentsButton:SetScript("OnMouseDown" , function()
+    local out = ""
+
+    -- tree metadata: type spec class
+    out = out..string.sub(alpha,TalentTree.FORGE_SELECTED_TAB.TalentType+1,TalentTree.FORGE_SELECTED_TAB.TalentType+1)
+    out = out..string.sub(alpha,TalentTree.FORGE_SELECTED_TAB.Id,TalentTree.FORGE_SELECTED_TAB.Id)
+    out = out..string.sub(alpha,GetClassId(UnitClass("player")),GetClassId(UnitClass("player")))
+
+    -- TODO: CLASS TREE
+    for _, rank in ipairs(TreeCache.Spells[TalentTree.ClassTree]) do
+        out = out..string.sub(alpha,rank+1,rank+1)
+    end
+
+    -- Spec tree last
+    for _, rank in ipairs(TreeCache.Spells[TalentTree.FORGE_SELECTED_TAB.Id]) do
+        out = out..string.sub(alpha,rank+1,rank+1)
+    end    
+    
+    print("Talent string to send: "..out)
+    PushForgeMessage(ForgeTopic.LEARN_TALENT, out);
 end)
