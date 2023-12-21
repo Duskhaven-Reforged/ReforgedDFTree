@@ -3,5 +3,7 @@ Forgeframe:RegisterEvent("PLAYER_LOGIN")
 Forgeframe:SetScript("OnEvent", function()
     InitializeTalentTree()
     InitializeTooltips()
-    PushForgeMessage(ForgeTopic.COLLECTION_INIT, "-1");
+    InitializeTransmog()
+    initializeAllStats()
+    InitInstance()
 end)
