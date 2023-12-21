@@ -1369,6 +1369,7 @@ end)
    end
 		   
 if spell.nodeType == 2 and spell.Choices then
+    --print(dump(spell.Choices))
     if #spell.Choices >= 2 then
         local spellId1, spellId2 = spell.Choices[1], spell.Choices[2]
         local _, _, texturePath1 = GetSpellInfo(spellId1)
