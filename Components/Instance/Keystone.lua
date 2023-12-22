@@ -70,7 +70,7 @@ function createKeySetupWindow()
 
     KeySetupWindow.header.title = KeySetupWindow.header:CreateFontString("OVERLAY");
     KeySetupWindow.header.title:SetPoint("CENTER", KeySetupWindow.header, "CENTER");
-    KeySetupWindow.header.title:SetFont(PATH .. "Fonts\\Expressway.TTF", 10);
+    KeySetupWindow.header.title:SetFont("Fonts\\FRIZQT__.TTF", 10);
     KeySetupWindow.header.title:SetText("Keystone Creation");
     KeySetupWindow.header.title:SetTextColor(188 / 255, 150 / 255, 28 / 255, 1);
 
@@ -90,12 +90,12 @@ function createKeySetupWindow()
 
     KeySetupWindow.body.display.name = KeySetupWindow.body.display:CreateFontString("OVERLAY");
     KeySetupWindow.body.display.name:SetPoint("CENTER", KeySetupWindow.body.display, "CENTER");
-    KeySetupWindow.body.display.name:SetFont(PATH .. "Fonts\\Expressway.TTF", tmogsettings.headerheight);
+    KeySetupWindow.body.display.name:SetFont("Fonts\\FRIZQT__.TTF", tmogsettings.headerheight);
     KeySetupWindow.body.display.name:SetTextColor(255 / 255, 128 / 255, 0 / 255, 1);
 
     KeySetupWindow.body.display.level = KeySetupWindow.body.display:CreateFontString("OVERLAY");
     KeySetupWindow.body.display.level:SetPoint("BOTTOM", KeySetupWindow.body.display, "BOTTOM");
-    KeySetupWindow.body.display.level:SetFont(PATH .. "Fonts\\Expressway.TTF", tmogsettings.headerheight/2);
+    KeySetupWindow.body.display.level:SetFont("Fonts\\FRIZQT__.TTF", tmogsettings.headerheight/2);
     KeySetupWindow.body.display.level:SetText("Dungeon Level: ");
     KeySetupWindow.body.display.level:SetTextColor(0 / 255, 255 / 255, 0 / 255, 1);
 
@@ -106,7 +106,7 @@ function createKeySetupWindow()
 
     KeySetupWindow.body.affixes.title = KeySetupWindow.body.affixes:CreateFontString("OVERLAY");
     KeySetupWindow.body.affixes.title:SetPoint("TOP", KeySetupWindow.body.affixes, "TOP", 0, -tmogsettings.headerheight/2);
-    KeySetupWindow.body.affixes.title:SetFont(PATH .. "Fonts\\Expressway.TTF", tmogsettings.headerheight/1.5);
+    KeySetupWindow.body.affixes.title:SetFont("Fonts\\FRIZQT__.TTF", tmogsettings.headerheight/1.5);
     KeySetupWindow.body.affixes.title:SetTextColor(255 / 255, 255 / 255, 255 / 255, 1);
     KeySetupWindow.body.affixes.title:SetText("Affixes")
     KeySetupWindow.body.affixes.tiles = {}
@@ -118,17 +118,17 @@ function createKeySetupWindow()
 
     KeySetupWindow.body.time.bronze = KeySetupWindow.body.time:CreateFontString("OVERLAY");
     KeySetupWindow.body.time.bronze:SetPoint("CENTER", KeySetupWindow.body.time, "LEFT", KeySetupWindow:GetWidth()/5, tmogsettings.headerheight/2);
-    KeySetupWindow.body.time.bronze:SetFont(PATH .. "Fonts\\Expressway.TTF", tmogsettings.headerheight);
+    KeySetupWindow.body.time.bronze:SetFont("Fonts\\FRIZQT__.TTF", tmogsettings.headerheight);
     KeySetupWindow.body.time.bronze:SetTextColor(255 / 255, 255 / 255, 255 / 255, 1);
 
     KeySetupWindow.body.time.silver = KeySetupWindow.body.time:CreateFontString("OVERLAY");
     KeySetupWindow.body.time.silver:SetPoint("CENTER", KeySetupWindow.body.time, "CENTER", 0, tmogsettings.headerheight/2);
-    KeySetupWindow.body.time.silver:SetFont(PATH .. "Fonts\\Expressway.TTF", tmogsettings.headerheight);
+    KeySetupWindow.body.time.silver:SetFont("Fonts\\FRIZQT__.TTF", tmogsettings.headerheight);
     KeySetupWindow.body.time.silver:SetTextColor(255 / 255, 255 / 255, 255 / 255, 1);
 
     KeySetupWindow.body.time.gold = KeySetupWindow.body.time:CreateFontString("OVERLAY");
     KeySetupWindow.body.time.gold:SetPoint("CENTER", KeySetupWindow.body.time, "RIGHT", -KeySetupWindow:GetWidth()/5, tmogsettings.headerheight/2);
-    KeySetupWindow.body.time.gold:SetFont(PATH .. "Fonts\\Expressway.TTF", tmogsettings.headerheight);
+    KeySetupWindow.body.time.gold:SetFont("Fonts\\FRIZQT__.TTF", tmogsettings.headerheight);
     KeySetupWindow.body.time.gold:SetTextColor(255 / 255, 255 / 255, 255 / 255, 1);
 
     KeySetupWindow.body.time.start = CreateFrame("Button", keyStart, KeySetupWindow.body.time, "UIPanelButtonTemplate")
@@ -164,22 +164,22 @@ function createMythicProgress()
 
     KeyProgress.title = KeyProgress:CreateFontString("OVERLAY");
     KeyProgress.title:SetPoint("TOPLEFT", KeyProgress, "TOPLEFT", 0, 0);
-    KeyProgress.title:SetFont(PATH .. "Fonts\\Expressway.TTF", tmogsettings.headerheight/1.5);
+    KeyProgress.title:SetFont("Fonts\\FRIZQT__.TTF", tmogsettings.headerheight/1.5);
     KeyProgress.title:SetTextColor(255 / 255, 255 / 255, 255 / 255, 1);
 
     KeyProgress.deaths = KeyProgress:CreateFontString("OVERLAY");
     KeyProgress.deaths:SetPoint("TOPRIGHT", KeyProgress, "TOPRIGHT", 0, 0);
-    KeyProgress.deaths:SetFont(PATH .. "Fonts\\Expressway.TTF", tmogsettings.headerheight/1.5);
+    KeyProgress.deaths:SetFont("Fonts\\FRIZQT__.TTF", tmogsettings.headerheight/1.5);
     KeyProgress.deaths:SetTextColor(255 / 255, 255 / 255, 255 / 255, 1);
 
     KeyProgress.timer = KeyProgress:CreateFontString("OVERLAY");
     KeyProgress.timer:SetPoint("TOPLEFT", KeyProgress, "TOPLEFT", 0, -tmogsettings.headerheight);
-    KeyProgress.timer:SetFont(PATH .. "Fonts\\Expressway.TTF", tmogsettings.headerheight/2);
+    KeyProgress.timer:SetFont("Fonts\\FRIZQT__.TTF", tmogsettings.headerheight/2);
     KeyProgress.timer:SetTextColor(255 / 255, 255 / 255, 255 / 255, 1);
 
     KeyProgress.objectives = KeyProgress:CreateFontString("OVERLAY");
     KeyProgress.objectives:SetPoint("TOPLEFT", KeyProgress, "TOPLEFT", 0, -tmogsettings.headerheight*2);
-    KeyProgress.objectives:SetFont(PATH .. "Fonts\\Expressway.TTF", tmogsettings.headerheight/2);
+    KeyProgress.objectives:SetFont("Fonts\\FRIZQT__.TTF", tmogsettings.headerheight/2);
     KeyProgress.objectives:SetTextColor(255 / 255, 255 / 255, 255 / 255, 1);
     KeyProgress.objectives:SetJustifyH("LEFT");
 end

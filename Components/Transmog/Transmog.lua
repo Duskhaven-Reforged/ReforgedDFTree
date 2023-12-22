@@ -58,7 +58,7 @@ function createTransmogWindow()
 
     TransmogWindow.header.title = TransmogWindow.header:CreateFontString("OVERLAY");
     TransmogWindow.header.title:SetPoint("CENTER", TransmogWindow.header, "CENTER");
-    TransmogWindow.header.title:SetFont(PATH .. "Fonts\\Expressway.TTF", 10);
+    TransmogWindow.header.title:SetFont("Fonts\\FRIZQT__.TTF", 10);
     TransmogWindow.header.title:SetText("Transmogrification");
     TransmogWindow.header.title:SetTextColor(188 / 255, 150 / 255, 28 / 255, 1); -- rgb(188, 150, 28)
 
@@ -216,7 +216,7 @@ function SetPageNumber(number)
     if not TransmogWindow.collection.pagenumber then
         TransmogWindow.collection.pagenumber = TransmogWindow.collection:CreateFontString(nil, "OVERLAY", "GameFontHighlight");
         TransmogWindow.collection.pagenumber:SetPoint("BOTTOM", TransmogWindow.collection, "BOTTOM", 0, .2*tmogsettings.headerheight);
-        TransmogWindow.collection.pagenumber:SetFont(PATH .. "Fonts\\Expressway.TTF", .6*tmogsettings.headerheight);
+        TransmogWindow.collection.pagenumber:SetFont("Fonts\\FRIZQT__.TTF", .6*tmogsettings.headerheight);
         TransmogWindow.collection.pagenumber:SetShadowOffset(1, -1);
     end
 
@@ -323,7 +323,7 @@ function CreateSlot(x, y, name)
     slot:SetSize(slotSize, slotSize)
     slot:SetHighlightTexture("Interface\\Buttons\\CheckButtonHilight")
 
-    local texture = slot:CreateTexture(nil, "ARTWORK", nil, perkInspectFrame:GetFrameLevel() + 3)
+    local texture = slot:CreateTexture(nil, "ARTWORK", nil)
     SetTemplate(slot)
     slot.texture = texture;
 
